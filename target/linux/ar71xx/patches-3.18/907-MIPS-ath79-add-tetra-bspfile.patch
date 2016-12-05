@@ -1,0 +1,39 @@
+--- a/arch/mips/ath79/Kconfig
++++ b/arch/mips/ath79/Kconfig
+@@ -1318,6 +1318,19 @@ config ATH79_MACH_QIHOO_C301
+ 	select ATH79_DEV_USB
+ 	select ATH79_NVRAM
+ 
++config ATH79_MACH_TETRA
++    bool "tetra board support"
++    select SOC_AR934X
++    select PCI
++    select ATH79_DEV_AP9X_PCI if PCI
++    select ATH79_DEV_ETH
++    select ATH79_DEV_GPIO_BUTTONS
++    select ATH79_DEV_LEDS_GPIO
++    select ATH79_DEV_NFC
++    select ATH79_DEV_USB
++    select ATH79_DEV_WMAC
++    select ATH79_DEV_M25P80
++
+ endmenu
+ 
+ config SOC_AR71XX
+--- a/arch/mips/ath79/machtypes.h
++++ b/arch/mips/ath79/machtypes.h
+@@ -215,6 +215,7 @@ enum ath79_mach_type {
+ 	ATH79_MACH_WZR_450HP2,		/* Buffalo WZR-450HP2 */
+ 	ATH79_MACH_ZCN_1523H_2,		/* Zcomax ZCN-1523H-2-xx */
+ 	ATH79_MACH_ZCN_1523H_5,		/* Zcomax ZCN-1523H-5-xx */
++        ATH79_MACH_TETRA,               /* tetra */
+ };
+ 
+ #endif /* _ATH79_MACHTYPE_H */
+--- a/arch/mips/ath79/Makefile
++++ b/arch/mips/ath79/Makefile
+@@ -167,3 +167,4 @@ obj-$(CONFIG_ATH79_MACH_WZR_450HP2)	+= m
+ obj-$(CONFIG_ATH79_MACH_ZCN_1523H)	+= mach-zcn-1523h.o
+ obj-$(CONFIG_ATH79_MACH_CARAMBOLA2)	+= mach-carambola2.o
+ obj-$(CONFIG_ATH79_MACH_NBG6716)	+= mach-nbg6716.o
++obj-$(CONFIG_ATH79_MACH_TETRA)		+= mach-tetra.o

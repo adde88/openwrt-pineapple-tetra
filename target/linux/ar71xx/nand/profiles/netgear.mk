@@ -27,3 +27,15 @@ define Profile/WNDR4300/Description
 endef
 
 $(eval $(call Profile,WNDR4300))
+
+
+define Profile/TETRA
+	NAME:=TETRA
+	PACKAGES:=
+endef
+
+define Profile/TETRA/Description
+Package set optimized for TETRA
+endef
+
+$(eval $(call Profile,TETRA))

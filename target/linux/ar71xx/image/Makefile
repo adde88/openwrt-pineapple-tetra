@@ -1008,6 +1008,7 @@ wnr2000v3_mtdlayout=mtdparts=spi0.0:256k(u-boot)ro,64k(u-boot-env)ro,3712k(firmw
 wnr2000v4_mtdlayout=mtdparts=spi0.0:192k(u-boot)ro,64k(u-boot-env)ro,3776k(firmware),64k(art)ro
 r6100_mtdlayout=mtdparts=ar934x-nfc:128k(u-boot)ro,256k(caldata),256k(caldata-backup),512k(config),512k(pot),2048k(kernel),122240k(ubi),25600k@0x1a0000(firmware),2048k(language),3072k(traffic_meter)
 wndr4300_mtdlayout=mtdparts=ar934x-nfc:256k(u-boot)ro,256k(u-boot-env)ro,256k(caldata),512k(pot),2048k(language),512k(config),3072k(traffic_meter),2048k(kernel),23552k(ubi),25600k@0x6c0000(firmware),256k(caldata_backup),-(reserved)
+tetra_mtdlayout=mtdparts=spi0.0:256k(u-boot)ro,256k(u-boot-env),256k(caldata),-(mb0);ar934x-nfc:2048k(kernel),-(ubi)
 zcn1523h_mtdlayout=mtdparts=spi0.0:256k(u-boot)ro,64k(u-boot-env)ro,6208k(rootfs),1472k(kernel),64k(configure)ro,64k(mfg)ro,64k(art)ro,7680k@0x50000(firmware)
 mynet_n600_mtdlayout=mtdparts=spi0.0:256k(u-boot)ro,64k(u-boot-env)ro,64k(devdata)ro,64k(devconf)ro,15872k(firmware),64k(radiocfg)ro
 mynet_rext_mtdlayout=mtdparts=spi0.0:256k(u-boot)ro,7808k(firmware),64k(nvram)ro,64k(ART)ro
@@ -1721,7 +1722,7 @@ define Image/Build/NetgearNAND
 	$(eval imageraw=$(KDIR_TMP)/$(2)-raw.img)
 	$(CP) $(KDIR)/root.squashfs-raw $(KDIR_TMP)/root.squashfs
 	echo -ne '\xde\xad\xc0\xde' > $(KDIR_TMP)/jffs2.eof
-	$(call ubinize,ubinize-$(9).ini,$(KDIR_TMP),$(KDIR_TMP)/$(2)-root.ubi,128KiB,2048,-E 5)
+	$(call ubinize,ubinize-$(9).ini,$(KDIR_TMP),$(KDIR_TMP)/$(2)-root.ubi,512KiB,4096,-E 5)
 	( \
 		dd if=$(KDIR_TMP)/vmlinux-$(2).uImage; \
 		dd if=$(KDIR_TMP)/$(2)-root.ubi \
@@ -2091,6 +2092,7 @@ ifeq ($(SUBTARGET),nand)
 $(eval $(call SingleProfile,NetgearNAND,64k,WNDR3700V4,wndr3700v4,WNDR3700_V4,ttyS0,115200,$$(wndr4300_mtdlayout),0x33373033,WNDR3700v4,"",-H 29763948+128+128,wndr4300))
 $(eval $(call SingleProfile,NetgearNAND,64k,WNDR4300V1,wndr4300,WNDR4300,ttyS0,115200,$$(wndr4300_mtdlayout),0x33373033,WNDR4300,"",-H 29763948+0+128+128+2x2+3x3,wndr4300))
 $(eval $(call SingleProfile,NetgearNAND,64k,R6100,r6100,R6100,ttyS0,115200,$$(r6100_mtdlayout),0x36303030,R6100,"",-H 29764434+0+128+128+2x2+2x2,wndr4300))
+$(eval $(call SingleProfile,NetgearNAND,64k,TETRA,tetra,TETRA,ttyS0,115200,$$(tetra_mtdlayout),0x33373033,TETRA,"",-H 29763948+0+128+128+2x2+3x3,tetra))
 
 $(eval $(call SingleProfile,ZyXELNAND,128k,NBG6716,nbg6716,NBG6716,ttyS0,115200,NBG6716,$$(zyx_nbg6716_mtdlayout),mem=256M))
 

@@ -414,7 +414,8 @@ platform_check_image() {
 	nbg6716 | \
 	r6100 | \
 	wndr3700v4 | \
-	wndr4300 )
+	wndr4300 | \
+        tetra)
 		nand_do_platform_check $board $1
 		return $?;
 		;;

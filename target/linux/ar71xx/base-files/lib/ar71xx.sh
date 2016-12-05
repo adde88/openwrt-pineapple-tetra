@@ -320,6 +320,9 @@ ar71xx_board_detect() {
 	*"Oolite V1.0")
 		name="oolite"
 		;;
+        *"tetra")
+                name="tetra"
+                ;;
 	*"AC1750DB")
 		name="f9k1115v2"
 		;;
