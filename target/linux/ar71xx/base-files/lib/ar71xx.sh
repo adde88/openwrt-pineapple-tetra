@@ -37,8 +37,9 @@ wndr3700_board_detect() {
 		machine="NETGEAR WNDR3700"
 		;;
 	"33373031")
-		# Use awk to remove everything after the first zero byte
-		model="$(ar71xx_get_mtd_offset_size_format art 41 32 %c | awk 'BEGIN{FS="[[:cntrl:]]"} {print $1; exit}')"
+		model="$(ar71xx_get_mtd_offset_size_format art 41 32 %c)"
+		# Use awk to remove everything unprintable
+		model_stripped="$(ar71xx_get_mtd_offset_size_format art 41 32 %c | LC_CTYPE=C awk -v 'FS=[^[:print:]]' '{print $1; exit}')"
 		case $model in
 		$'\xff'*)
 			if [ "${model:24:1}" = 'N' ]; then
@@ -48,14 +49,14 @@ wndr3700_board_detect() {
 			fi
 			;;
 		'29763654+16+64'*)
-			machine="NETGEAR ${model:14}"
+			machine="NETGEAR ${model_stripped:14}"
 			;;
 		'29763654+16+128'*)
-			machine="NETGEAR ${model:15}"
+			machine="NETGEAR ${model_stripped:15}"
 			;;
 		*)
 			# Unknown ID
-			machine="NETGEAR $model"
+			machine="NETGEAR ${model_stripped}"
 		esac
 	esac
 
@@ -122,7 +123,7 @@ tplink_board_detect() {
 	"3C0002"*)
 		model="MINIBOX_V1"
 		;;
-	"070300"*)
+	"070301"*)
 		model="TP-Link TL-WR703N"
 		;;
 	"071000"*)
@@ -332,6 +333,9 @@ ar71xx_board_detect() {
 	*"AirRouter")
 		name="airrouter"
 		;;
+	*"ALFA Network AP120C")
+		name="alfa-ap120c"
+		;;
 	*"ALFA Network AP96")
 		name="alfa-ap96"
 		;;
@@ -441,6 +445,9 @@ ar71xx_board_detect() {
 	*"Dragino v2")
 		name="dragino2"
 		;;
+	*"DW33D")
+		name="dw33d"
+		;;
 	*"EAP300 v2")
 		name="eap300v2"
 		;;
@@ -517,6 +524,12 @@ ar71xx_board_detect() {
 	*MR600v2)
 		name="mr600v2"
 		;;
+	*MR1750)
+		name="mr1750"
+		;;
+	*MR1750v2)
+		name="mr1750v2"
+		;;
 	*MR600)
 		name="mr600"
 		;;
@@ -559,6 +572,9 @@ ar71xx_board_detect() {
 	*"OM2P HSv2")
 		name="om2p-hsv2"
 		;;
+	*"OM2P HSv3")
+		name="om2p-hsv3"
+		;;
 	*"OM2P LC")
 		name="om2p-lc"
 		;;
@@ -567,6 +583,12 @@ ar71xx_board_detect() {
 		;;
 	*"OM5P AN")
 		name="om5p-an"
+		;;
+	*"OM5P AC")
+		name="om5p-ac"
+		;;
+	*"OM5P ACv2")
+		name="om5p-acv2"
 		;;
 	*"Onion Omega")
 		name="onion-omega"
@@ -766,6 +788,9 @@ ar71xx_board_detect() {
 	*"TL-WA901ND v3")
 		name="tl-wa901nd-v3"
 		;;
+	*"TL-WA901ND v4")
+		name="tl-wa901nd-v4"
+		;;
 	*"TL-WDR3500")
 		name="tl-wdr3500"
 		;;
@@ -793,6 +818,9 @@ ar71xx_board_detect() {
 	*"TL-WR841N/ND v9")
 		name="tl-wr841n-v9"
 		;;
+    *"TL-WR841N/ND v11")
+        name="tl-wr841n-v11"
+		;;
 	*"TL-WR842N/ND v2")
 		name="tl-wr842n-v2"
 		;;
@@ -801,6 +829,9 @@ ar71xx_board_detect() {
 		;;
 	*"TL-WR941N/ND v5")
 		name="tl-wr941nd-v5"
+		;;
+	*"TL-WR941N/ND v6")
+		name="tl-wr941nd-v6"
 		;;
 	*"TL-WR703N v1")
 		name="tl-wr703n"
@@ -898,8 +929,14 @@ ar71xx_board_detect() {
 	*"WNR1000 V2")
 		name="wnr1000-v2"
 		;;
+	*WPN824N)
+		name="wpn824n"
+		;;
 	*WRT160NL)
 		name="wrt160nl"
+		;;
+	*E2100L)
+		name="e2100l"
 		;;
 	*WRT400N)
 		name="wrt400n"
